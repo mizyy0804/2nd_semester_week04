@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>명상합시다...</title>
+
+  
+  <style>
+  @font-face {
+    font-family: 'Eulyoo1945';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(Eulyoo1945-Regular.eot),
+         url(Eulyoo1945-Regular.woff2) format("woff2"),
+         url(Eulyoo1945-Regular.woff) format("woff"),
+         url(Eulyoo1945-Regular.ttf) format("truetype");
+  }
+  @font-face {
+    font-family: 'Eulyoo1945';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(Eulyoo1945-SemiBold.eot),
+         url(Eulyoo1945-SemiBold.woff2) format("woff2"),
+         url(Eulyoo1945-SemiBold.woff) format("woff"),
+         url(Eulyoo1945-SemiBold.ttf) format("truetype");
+  }
+  </style>
+
+  <style>
+    :root{
+      --ink:#fff;        /* 텍스트(화이트) */
+      --muted:#b9b9b9;   /* 보조 텍스트 */
+      --rail:#2a2a2a;    /* 진행바 배경 */
+      --bar:#ffffff;     /* 진행바(화이트) */
+      --bg:#000000;      /* 배경(블랙) */
+      --field:#111111;   /* 인풋/셀렉트 배경 */
+      --stroke:#333333;  /* 인풋/셀렉트 테두리 */
+    }
+
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0;
+      background: var(--bg);
+      color:var(--ink);
+      font-family:'Eulyoo1945', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR';
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+    }
+    .wrap{ width:min(720px,92vw); padding:40px 28px; }
+
+    h1{ font-weight:600; letter-spacing:.5px; margin:0 0 8px; font-size:clamp(24px,4vw,36px) }
+    .sub{ color:var(--muted); margin-bottom:18px }
+
+    .panel{ display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap; margin-bottom:18px }
+    select, input[type="number"]{
+      appearance:none; border:1px solid var(--stroke); background:var(--field); border-radius:999px;
+      padding:10px 14px; font-family:inherit; font-size:16px; color:var(--ink); outline:none;
+    }
+    .label{
+      display:inline-block; padding:6px 10px; border:1px solid var(--stroke); border-radius:999px;
+      font-size:14px; color:#e3e3e3; background:transparent;
+    }
+
+    /* 중앙 GIF */
+    .hero{
+      margin: 4px auto 14px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .hero img{
+      width: clamp(160px, 34vw, 260px);
+      height: auto;
+      display:block;
+      border-radius: 12px;
+3
+    }
+
+    #phase{ margin-top:6px; font-size:clamp(16px,2.8vw,18px); color:var(--muted) }
+    #time{ font-size:clamp(64px,14vw,112px); font-weight:600; letter-spacing:3px; line-height:1.05; margin:6px 0 12px }
+
+    .bar{ height:12px; background:var(--rail); border-radius:999px; overflow:hidden; width:min(520px,90%); margin:0 auto 14px }
+    .bar > div{ height:100%; width:0%; background:var(--bar); transition:width .25s linear }
+
+
+    .btns{ display:flex; gap:14px; justify-content:center; align-items:center; margin: 14px 0 8px; flex-wrap:wrap }
+    button{
+      appearance:none; border:none; cursor:pointer;
+      width:74px; height:74px; border-radius:50%;
+      background:#000; color:#fff; font-family:inherit; font-weight:600; font-size:15px;
+      display:grid; place-items:center;
+
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.12),
+        0 6px 18px rgba(0,0,0,.50);
+      transition: transform .06s ease;
+    }
+    button:active{ transform: translateY(1px) scale(.99) }
+    button[disabled]{ opacity:.45; cursor:not-allowed; transform:none }
+
+    .session-left{ color:var(--muted); margin-top:6px }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>명상합시다...</h1>
+    <div class="sub">패턴과 총 세션 시간을 고르고 시작하세요</div>
+
+    <div class="panel" role="group" aria-label="설정">
+      <span class="label">패턴</span>
+      <select id="pattern" aria-label="호흡 패턴 선택">
+        <option value="4-4-4">박스 브리딩 4–4–4 (들숨–멈춤–날숨)</option>
+        <option value="4-7-8">4–7–8 (들숨–멈춤–날숨)</option>
+        <option value="5-5-5">5–5–5 (들숨–멈춤–날숨)</option>
+      </select>
+
+      <span class="label">세션(분)</span>
+      <input id="sessionMin" type="number" min="1" max="60" value="3" aria-label="세션 길이(분)" />
+    </div>
+
+    <!-- 중앙 GIF -->
+    <div class="hero">
+      <img
+        src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWlmYzAzdDN1cGhmbmVqNWE3YmM3d3BsZmFoYTVvems0MmsxMzFqbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3osxYBcn7QJYBvqE9O/giphy.gif"
+        alt="Calm animation GIF" />
+    </div>
+
+    <div id="phase" aria-live="polite">대기 중</div>
+    <div id="time">00</div>
+
+    <div class="bar" aria-hidden="true"><div id="bar"></div></div>
+
+    <div class="btns">
+      <button id="startBtn" title="시작">시작</button>
+      <button id="pauseBtn" title="일시정지">정지</button>
+      <button id="resumeBtn" title="재개">재개</button>
+      <button id="resetBtn" title="초기화">초기화</button>
+    </div>
+
+    <div id="sessionLeft" class="session-left">세션 남은 시간: —</div>
+  </main>
+
+  <script>
+
+    let STEPS = [];
+    let stepIndex = 0;
+    let left = 0;
+    let elapsedInStep = 0;
+    let sessionTotal = 0;
+    let sessionLeft = 0;
+    let id = null;
+    let running = false;
+
+  
+    const $ = (q) => document.querySelector(q);
+    const fmt2 = (n) => String(n).padStart(2,'0');
+    const fmtMinSec = (sec) => `${fmt2(Math.floor(sec/60))}:${fmt2(sec%60)}`;
+
+    function parsePattern(str){
+      const [a,b,c] = str.split('-').map(x => Math.max(1, parseInt(x,10)||0));
+      return [
+        { name:'들숨', seconds:a },
+        { name:'멈춤', seconds:b },
+        { name:'날숨', seconds:c }
+      ];
+    }
+
+    function applySettings(){
+      STEPS = parsePattern($('#pattern').value);
+      stepIndex = 0;
+      left = STEPS[0].seconds;
+      elapsedInStep = 0;
+      sessionTotal = Math.max(60, (parseInt($('#sessionMin').value,10)||3) * 60);
+      sessionLeft = sessionTotal;
+      render(true);
+    }
+
+    function render(resetPhase=false){
+      const step = STEPS[stepIndex] || {name:'대기', seconds:1};
+      $('#phase').textContent = running ? `지금: ${step.name}` : (resetPhase ? '대기 중' : $('#phase').textContent);
+      $('#time').textContent = fmt2(Math.ceil(left));
+      $('#bar').style.width = (elapsedInStep / Math.max(1, step.seconds)) * 100 + '%';
+      $('#sessionLeft').textContent = `세션 남은 시간: ${fmtMinSec(Math.max(0, Math.ceil(sessionLeft)))}`;
+
+   
+      $('#startBtn').disabled  = running;
+      $('#pauseBtn').disabled  = !running;
+      $('#resumeBtn').disabled = running || sessionLeft<=0;
+    }
+
+    function goNext(){
+      stepIndex = (stepIndex + 1) % STEPS.length;
+      left = STEPS[stepIndex].seconds;
+      elapsedInStep = 0;
+      render();
+    }
+
+    function finishSession(){
+      running = false; clearInterval(id);
+      $('#phase').textContent = '수고하셨어요! 세션이 완료되었습니다.';
+      $('#time').textContent = '끝';
+      $('#bar').style.width = '100%';
+      alert('수고하셨어요! 세션이 완료되었습니다.');
+      render();
+    }
+
+    function tick(){
+      if(!running) return;
+      left = Math.max(0, left - 1);
+      sessionLeft = Math.max(0, sessionLeft - 1);
+      elapsedInStep = Math.min(elapsedInStep + 1, (STEPS[stepIndex]||{seconds:1}).seconds);
+      render();
+      if(left <= 0) goNext();
+      if(sessionLeft <= 0) finishSession();
+    }
+
+    function start(){
+      if(running){ resetTimer(false); }
+      applySettings();
+      running = true;
+      clearInterval(id);
+      id = setInterval(tick, 1000);
+      render();
+    }
+    function pause(){ running = false; render(); }
+    function resume(){ if(sessionLeft>0){ running = true; render(); } }
+    function resetTimer(resetLabel=true){
+      running = false; clearInterval(id); applySettings();
+      if(resetLabel) render(true);
+    }
+
+
+    $('#startBtn').onclick = start;
+    $('#pauseBtn').onclick = pause;
+    $('#resumeBtn').onclick = resume;
+    $('#resetBtn').onclick = () => resetTimer(true);
+    $('#pattern').addEventListener('change', ()=> resetTimer());
+    $('#sessionMin').addEventListener('change', ()=> resetTimer());
+
+
+    applySettings();
+  </script>
+</body>
+</html>
