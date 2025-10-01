@@ -2,41 +2,27 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <title>명상합시다...</title>
+  <title>명상합시다</title>
 
-  
   <style>
+
   @font-face {
-    font-family: 'Eulyoo1945';
-    font-style: normal;
-    font-weight: 400;
+    font-family: 'JoseonGulim';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGu.woff') format('woff');
+    font-weight: normal;
     font-display: swap;
-    src: url(Eulyoo1945-Regular.eot),
-         url(Eulyoo1945-Regular.woff2) format("woff2"),
-         url(Eulyoo1945-Regular.woff) format("woff"),
-         url(Eulyoo1945-Regular.ttf) format("truetype");
-  }
-  @font-face {
-    font-family: 'Eulyoo1945';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url(Eulyoo1945-SemiBold.eot),
-         url(Eulyoo1945-SemiBold.woff2) format("woff2"),
-         url(Eulyoo1945-SemiBold.woff) format("woff"),
-         url(Eulyoo1945-SemiBold.ttf) format("truetype");
   }
   </style>
 
   <style>
     :root{
-      --ink:#fff;        /* 텍스트(화이트) */
-      --muted:#b9b9b9;   /* 보조 텍스트 */
-      --rail:#2a2a2a;    /* 진행바 배경 */
-      --bar:#ffffff;     /* 진행바(화이트) */
-      --bg:#000000;      /* 배경(블랙) */
-      --field:#111111;   /* 인풋/셀렉트 배경 */
-      --stroke:#333333;  /* 인풋/셀렉트 테두리 */
+      --ink:#fff; 
+      --muted:#b9b9b9;
+      --rail:#2a2a2a;
+      --bar:#ffffff;
+      --bg:#000000;
+      --field:#111111;
+      --stroke:#333333;
     }
 
     *{ box-sizing:border-box }
@@ -45,7 +31,7 @@
       margin:0;
       background: var(--bg);
       color:var(--ink);
-      font-family:'Eulyoo1945', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR';
+      font-family:'JoseonGulim', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR';
       display:flex; align-items:center; justify-content:center;
       text-align:center;
     }
@@ -64,7 +50,7 @@
       font-size:14px; color:#e3e3e3; background:transparent;
     }
 
-    /* 중앙 GIF */
+
     .hero{
       margin: 4px auto 14px;
       display:flex; align-items:center; justify-content:center;
@@ -74,7 +60,6 @@
       height: auto;
       display:block;
       border-radius: 12px;
-3
     }
 
     #phase{ margin-top:6px; font-size:clamp(16px,2.8vw,18px); color:var(--muted) }
@@ -82,7 +67,6 @@
 
     .bar{ height:12px; background:var(--rail); border-radius:999px; overflow:hidden; width:min(520px,90%); margin:0 auto 14px }
     .bar > div{ height:100%; width:0%; background:var(--bar); transition:width .25s linear }
-
 
     .btns{ display:flex; gap:14px; justify-content:center; align-items:center; margin: 14px 0 8px; flex-wrap:wrap }
     button{
@@ -104,7 +88,8 @@
 </head>
 <body>
   <main class="wrap">
-    <h1>명상합시다...</h1>
+    <h1 style="margin-bottom: 20px;">명상합시다...</h1>
+
     <div class="sub">패턴과 총 세션 시간을 고르고 시작하세요</div>
 
     <div class="panel" role="group" aria-label="설정">
@@ -119,7 +104,7 @@
       <input id="sessionMin" type="number" min="1" max="60" value="3" aria-label="세션 길이(분)" />
     </div>
 
-    <!-- 중앙 GIF -->
+
     <div class="hero">
       <img
         src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWlmYzAzdDN1cGhmbmVqNWE3YmM3d3BsZmFoYTVvems0MmsxMzFqbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3osxYBcn7QJYBvqE9O/giphy.gif"
