@@ -86,9 +86,14 @@
     .session-left{ color:var(--muted); margin-top:6px }
   </style>
 </head>
+
 <body>
   <main class="wrap">
     <h1 style="margin-bottom: 20px;">명상합시다...</h1>
+
+    <audio id="bgm" loop>
+      <source src="meditation.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="sub">패턴과 총 세션 시간을 고르고 시작하세요</div>
 
@@ -201,13 +206,20 @@
     }
 
     function start(){
-      if(running){ resetTimer(false); }
-      applySettings();
-      running = true;
-      clearInterval(id);
-      id = setInterval(tick, 1000);
-      render();
-    }
+    if(running){ resetTimer(false); }
+    applySettings();
+    running = true;
+    clearInterval(id);
+    id = setInterval(tick, 1000);
+    render();
+
+    
+    const bgm = document.getElementById("bgm");
+    bgm.muted = false;
+    bgm.play().catch(err => {
+      console.log("음악 자동재생 차단됨:", err);
+    });
+  }
     function pause(){ running = false; render(); }
     function resume(){ if(sessionLeft>0){ running = true; render(); } }
     function resetTimer(resetLabel=true){
@@ -226,5 +238,7 @@
 
     applySettings();
   </script>
+
+
 </body>
 </html>
